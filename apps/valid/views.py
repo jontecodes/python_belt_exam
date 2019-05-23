@@ -1,3 +1,4 @@
+######### FOR VAAAALLLIIDDDDD #########
 from django.shortcuts import render, HttpResponse, redirect
 from .models import *
 from django.contrib import messages
@@ -25,14 +26,7 @@ def create(request):
         return redirect('/show')
 
 def show(request):
-    if 'id' not in request.session:
-        messages.success(request, "Not logged in!")
-        return redirect('/')
-    id = request.session['id']
-    context = {
-        "user": User.objects.get(id=id)
-    }
-    return render(request, "valid/show.html", context)
+    return redirect("/wall")
 
 def login(request):
     errors = User.objects.login_validator(request.POST)

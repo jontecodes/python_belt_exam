@@ -17,4 +17,5 @@ from django.conf.urls import url, include
 
 urlpatterns = [
     url(r'^', include('apps.valid.urls')),
+    url(r'^wall/', include('apps.wall.urls')),
 ]

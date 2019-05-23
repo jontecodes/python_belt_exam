@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Document</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #110e16;
+            color: aliceblue;
+            background-image: url('../static/img/thumbs-up-2056022_1920.jpg');
+            background-size: cover;
+        }
+
+        h1 {
+            width: 95%;
+            display: inline-block;
+        }
+
+        .navname {
+            padding-right: 25px;
+            font-size: 20px;
+        }
+
+        .nava {
+            padding-left: 10px;
+        }
+
+        .posts {
+            height: 100%;
+        }
+        .sp {
+            font-size: 15px;
+            display: inline-block;
+            width: 90%;
+        }
+        .d {
+            color: red;
+        }
+        .like {
+            color: green;
+        }
+        .unlike {
+            color: red;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="fluid-container">
+        <nav class="navbar navbar-light bg-dark justify-content-between">
+            <a class="navbar-brand">The Rickbook</a>
+            <form class="form-inline">
+                <p class="navname">Welcome {{ user.first_name }}!</p>
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                <a class="nava" href='/logout'>Logout</a>
+            </form>
+        </nav>
+        <div class="container inline-block">
+            <div>
+                <br>
+
+                <form action="create" method="POST">
+                    {% csrf_token %}
+                    <label for="exampleFormControlTextarea1">What's on your mind {{user.first_name}}?</label>
+                    <textarea name="message" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                    <br>
+                    <p class="text-right"><input type="submit" value="Post a message" class="btn btn-primary"></p>
+                </form>
+            </div>
+            <div class="container-fluid">
+                {% for m in messages %}
+                <div class="display">
+                    <h5>{{m.user.first_name}} - {{m.updated_at}}</h5>
+                    {% if m.user.id == user.id %}
+                    <a href="destroym/{{m.id}}">Delete</a>
+                    {% endif %}
+                    <p>Likes: {{m.likes_on_m.all | length}}</p>
+                    <p class="sp">{{m.message}}</p>
+                    {% if user in m.likes_on_m.all %}
+                    <a class="unlike" href="unlike/{{m.id}}">Unlike</a>
+                    {% else %}
+                    <a class="like" href="like/{{m.id}}">Like</a>
+                    {% endif %}
+
+                </div>
+                <div class="container-fluid">
+
+                    {% for c in comments %}
+                    {% if c.messages.id == m.id%}
+                    <div class="container">
+                        <h6>{{c.user.first_name}} - {{c.updated_at}}</h6>
+                        <p class="sp">{{c.comment}}</p>
+                        {% if user.id == c.user.id %}
+                        <a class="d inline-block" href="destroy/{{c.id}}">Delete</a>
+                        {% endif %}
+                        <!-- <a href="like/{{c.id}}">Like!</a> -->
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                    <form action="create_comment/{{m.id}}" method="POST">
+                        {% csrf_token %}
+                        <label for="exampleFormControlTextarea1">Post a comment:</label>
+                        <textarea name="commentb" class="form-control" id="exampleFormControlTextarea1"
+                            rows="2"></textarea>
+                        <br>
+                        <p class="text-right"><input type="submit" value="Post a comment" class="btn btn-primary"></p>
+                        <br>
+                    </form>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+
+
+    </div>
+</body>
+
+</html>
