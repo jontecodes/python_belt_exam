@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Edit</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'valid/style.css'%}">
+</head>
+
+<body>
+    <div class="fluid-container">
+        <nav class="navbar navbar-light bg-dark justify-content-between">
+            <a class="navbar-brand">Update</a>
+            <form class="form-inline">
+
+                <a class="nava" href="/quotes">Back </a>
+                <a class="nava" href='/logout'> Logout</a>
+            </form>
+        </nav>
+
+
+
+
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li class="messages">{{message}}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        <div class="container-fluid">
+            <div class="container text-center edit-form">
+                <form action="/update-user" method="post">
+                    {% csrf_token %}
+                    <p>First Name <input type="text" name="fnn" value="{{user.first_name}}"></p>
+                    <p>Last Name <input type="text" name="lnn" value="{{user.last_name}}"></p>
+                    <p>Email <input type="text" name="em" value="{{user.email}}"></p>
+                    <input class="btn btn-primary" type="submit" value="Update">
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

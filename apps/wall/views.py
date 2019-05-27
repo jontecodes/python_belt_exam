@@ -1,6 +1,6 @@
 ######### FOR THE WALLLLLLL #########
 from django.shortcuts import render, HttpResponse, redirect
-from ..valid.models import User
+from ..valid.models import User, Quote
 from .models import *
 from django.contrib import messages
 from django.contrib.sessions.models import Session
@@ -19,7 +19,8 @@ def index(request):
     context = {
         "user": User.objects.get(id=id),
         "messages": Message.objects.order_by('-created_at'),
-        "comments": Comments.objects.all()
+        "comments": Comments.objects.all(),
+        "quotes" : Quote.objects.all()
     }
     # print(context)
     return render(request, "wall/show.html", context)

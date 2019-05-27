@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'valid/style.css'%}">
+    <title>Your Submitted Quotes</title>
+</head>
+
+<body>
+    <div class="fluid-container">
+        <nav class="navbar navbar-light bg-dark justify-content-between">
+            <a class="navbar-brand">{{user.first_name}}'s Quotes</a>
+            <form class="form-inline">
+
+                <a class="nava" href="/quotes">Back </a>
+                <a class="nava" href='/logout'> Logout</a>
+            </form>
+        </nav>
+
+
+        <div class="container-fluid">
+            <div class="container text-center">
+                <h3>{{user.first_name}} {{user.last_name}}'s submitted quotes</h3>
+                
+            </div>
+        </div>
+
+        {% if quotes %}
+        
+            {% for quote in quotes%}
+            <div class="quote-page">
+            <p>{{quote.author}}: "{{quote.quote}}"</p>
+            <p>Posted by {{quote.user.first_name}} {{quote.user.last_name}}</p>
+
+        </div>    
+        {% endfor %}
+    
+        {% endif %}
+    </div>
+</body>
+
+</html>

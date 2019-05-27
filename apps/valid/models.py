@@ -32,6 +32,16 @@ class UserManager(models.Manager):
             errors['password_confirm'] = "Passwords do not match!"
         return errors
 
+    def edit_validator(self, postData):
+        errors = {}
+        if len(postData['fnn']) < 1:
+            errors['fnn'] = "You must change your first name to at least 1 character."
+        if len(postData['lnn']) < 1:
+            errors['lnn'] = "You must change your last name to at least 1 character."
+        if not EMAIL_REGEX.match(postData["em"]):
+            errors['em'] = "Email not entered in valid form"
+        return errors
+
     def login_validator(self, postData):
         errors = {}
         context = {
@@ -48,6 +58,21 @@ class UserManager(models.Manager):
         return errors
 
 
+class QuoteManager(models.Manager):
+
+    def quote_validator(self, postData):
+        errors = {}
+
+        if len(postData['author']) < 4:
+            errors['author'] = "Author name should be at 4 characters long."
+
+        if len(postData['quote']) < 11:
+            errors['quote'] = "Quote should be at least 11 characters long."
+
+        return errors
+
+
+
 
 
 class User(models.Model):
@@ -62,3 +87,14 @@ class User(models.Model):
     def __repr__(self):
         return f"<Shows object: {self.id} ({self.email})>"
 
+class Quote(models.Model):
+    quote = models.TextField()
+    author = models.CharField(max_length=255)
+    user = models.ForeignKey(User, related_name="quotes")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    likes_on_quotes = models.ManyToManyField(User, related_name="quotes_user_liked")
+    objects = QuoteManager()
+
+    def __repr__(self):
+        return f"<Quote object: {self.id} Author:({self.author})>"
